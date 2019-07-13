@@ -1,34 +1,40 @@
 from pathlib import Path
-from shutil import copy
+from os import listdir
+from shutil import move
 
-stanfordDogs = Path('./StandfordDogs/n02113799-standard_poodle')
+def percent_of(value, percent):
+  return round(value * (percent/100))
+
+def create_directories():
+  root = Path('./data')
+  if not root.exists():
+    root.mkdir()
+  # data/train, data/valid, data/test
+  for directory in ['train', 'valid', 'test']:
+    if not (root/directory).exists():
+      (root/directory).mkdir()
+
+stanfordData = Path('./StanfordDogs')
 data = Path('./data')
+count = len([i for i in listdir(stanfordData)])
 
-count = len([image for image in stanfordDogs.iterdir()])
+create_directories()
 
-for idx, old_dir in enumerate(stanfordDogs.iterdir()):
-  _, _, name = old_dir.parts
+for directory in stanfordData.iterdir():
+  if directory.name == '.DS_Store': continue
 
-  # training huskies
-  if idx <= (count * 0.6):
-    new_dir = data/'train/standard_poodle'
-    if not new_dir.exists():
-      new_dir.mkdir()
-    
-    copy(old_dir, new_dir/name)
-
-  # valid huskies
-  elif idx > (count * 0.6) and idx <= (count * 0.8):
-    new_dir = data/'valid/standard_poodle'
-    if not new_dir.exists():
-      new_dir.mkdir()
-    
-    copy(old_dir, new_dir/name)
-
-  # testing huskies
-  else:
-    new_dir = data/'test/standard_poodle'
-    if not new_dir.exists():
-      new_dir.mkdir()
-    
-    copy(old_dir, new_dir/name)
+  print('Directory', directory)
+  category = str(directory).split('-')[1].lower()
+  for idx, image in enumerate(directory.iterdir()):
+    if idx <= percent_of(count, 60):
+      destination = data/'train'/category
+      if not destination.exists(): destination.mkdir()
+      move(str(image), destination)
+    elif idx > percent_of(count, 60) and idx < percent_of(count, 80):
+      destination = data/'valid'/category
+      if not destination.exists(): destination.mkdir()
+      move(str(image), destination)
+    else:
+      destination = data/'test'/category
+      if not destination.exists(): destination.mkdir()
+      move(str(image), destination)

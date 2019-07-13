@@ -1,0 +1,6 @@
+*.tar
+StanfordDogs
+data
+.vscode
+*.swp
+.ipynb_checkpoints

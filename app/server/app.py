@@ -60,14 +60,7 @@ def predict_image_from_bytes(bytes):
     }
   })
 
-def top_three_predictions(outputs):
-  classes = [
-    {"name": c, "prob": outputs[idx].item()} for idx, c in enumerate(classes())
-  ]
-  sorted_classes = sorted(classes, key=lambda k: k['prob'], reverse=True)
-  return sorted_classes[0], sorted_classes[1], sorted_classes[2]
-
-def classes():
+def class_names():
   return [ 'affenpinscher', 'afghan_hound', 'african_hunting_dog', 'airedale', 
     'american_staffordshire_terrier', 'appenzeller', 'australian_terrier', 'basenji', 
     'basset', 'beagle', 'bedlington_terrier', 'bernese_mountain_dog', 'black_and_white', 
@@ -93,6 +86,13 @@ def classes():
     'tibetan_mastiff', 'tibetan_terrier', 'toy_poodle', 'toy_terrier', 'vizsla', 'walker_hound', 
     'weimaraner', 'welsh_springer_spaniel', 'west_highland_white_terrier', 'whippet', 'wire', 
     'yorkshire_terrier' ]
+
+def top_three_predictions(outputs):
+  classes = [
+    {"name": c, "prob": outputs[idx].item()} for idx, c in enumerate(class_names())
+  ]
+  sorted_classes = sorted(classes, key=lambda k: k['prob'], reverse=True)
+  return sorted_classes[0], sorted_classes[1], sorted_classes[2]
 
 if __name__ == "__main__":
   uvicorn.run(app, host='127.0.0.1', port=8000)

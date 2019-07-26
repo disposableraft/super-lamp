@@ -3,7 +3,7 @@
 
 This repo contains my work on the first lesson from [FastAI](https://www.fast.ai/).
 
-The model ([DogClassifier.ipynb](./DogClassifier.ipynb)) was trained with about 87% accuracy in predicting a dog's breed from a set of 120 possible classes. 
+The model ([DogClassifier-2.ipynb](./notebooks/DogClassifier-2.ipynb)) was trained with about 87% accuracy in predicting a dog's breed from a set of 120 possible classes. It used images from the [Stanford Dogs](http://vision.stanford.edu/aditya86/ImageNetDogs/) dataset.
 
 ![](./images/dog-classifier.gif)  
 
@@ -11,7 +11,7 @@ The accompanying web app was cobbled together with [Starlette.py](https://www.st
 
 ## Installation
 
-The fastest way to start classifying dogs is to do a "production" build.
+The fastest way to start classifying dogs is to do a "production" build. The model is < 100 mb, so hosted here on github.
 
 **Client Files**
 

@@ -1,6 +1,8 @@
 aiofiles
-jinja2
-starlette
-uvicorn
 aiohttp
+fastai
+jinja2
 python-multipart
+starlette
+torch
+uvicorn

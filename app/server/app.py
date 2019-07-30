@@ -95,4 +95,4 @@ def top_three_predictions(outputs):
   return sorted_classes[0], sorted_classes[1], sorted_classes[2]
 
 if __name__ == "__main__":
-  uvicorn.run(app, host='127.0.0.1', port=8000)
+  uvicorn.run(app, host='0.0.0.0', port=5000)

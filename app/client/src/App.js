@@ -22,7 +22,7 @@ class App extends React.Component {
 
   handleURL(event) {
     event.preventDefault();
-    axios.get('http://localhost:8000/from-url', {
+    axios.get('http://localhost:5000/from-url', {
       params: {
         url: this.state.image
       }
@@ -42,7 +42,7 @@ class App extends React.Component {
 
   handleUpload(event) {
     event.preventDefault();
-    const url = 'http://localhost:8000/upload';
+    const url = 'http://localhost:5000/upload';
     const formData = new FormData();
     formData.append('file', this.fileInput.current.files[0]);
     axios({

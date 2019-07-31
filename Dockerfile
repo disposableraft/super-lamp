@@ -5,9 +5,11 @@ RUN apt-get update \
     && pip install --upgrade pip \
     && rm -rf /var/lib/apt/lists/* 
 
-COPY ./app /app
+COPY ./app/server/requirements.txt /requirements.txt
 
-RUN pip install -r /app/server/requirements.txt
+RUN pip install -r /requirements.txt
+
+COPY ./app /app
 
 EXPOSE 80
 

@@ -14,8 +14,11 @@ class App extends React.Component {
     this.toggleMode = this.toggleMode.bind(this);
     this.state = {
       image: '',
-      prediction: null,
-      topThree: [],
+      predictions: [
+        {name: null, pred: null},
+        {name: null, pred: null},
+        {name: null, pred: null}
+      ],
       uploadMode: true,
     };
   }
@@ -30,8 +33,7 @@ class App extends React.Component {
     .then((response) => {
       this.setState(state => {
         return {
-          prediction: response.data.prediction,
-          topThree: response.data.topThree,
+          predictions: response.data.predictions,
         };
       })
     })
@@ -53,8 +55,7 @@ class App extends React.Component {
     .then(response => {
       this.setState(state => {
         return {
-          prediction: response.data.prediction,
-          topThree: response.data.topThree,
+          predictions: response.data.predictions,
         };
       })
     })
@@ -95,13 +96,18 @@ class App extends React.Component {
     this.setState(state => {
       return {
         image: '',
-        prediction: null,
         uploadMode: !state.uploadMode,
       };
     });
   }
 
   render() {
+    const {
+      image,
+      predictions,
+      uploadMode
+  } = this.state;
+
     const uploadForm = (
       <form onSubmit={this.handleUpload} >
         <h3>Select image to upload:</h3>
@@ -114,7 +120,7 @@ class App extends React.Component {
       <div>
         <h3>Enter a URL</h3>
           <form onSubmit={this.handleURL}>
-            <button onClick={this.handlePaste}>paste</button> <input type="text" value={this.state.image} onChange={this.handleURLChange} disabled />
+            <button onClick={this.handlePaste}>paste</button> <input type="text" value={image} onChange={this.handleURLChange} disabled />
             <button type="submit">Classify</button>
           </form>
       </div>
@@ -123,15 +129,15 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          {!this.state.prediction ? <h1>Dog Classifier</h1> : <h1>It might be a {this.state.prediction}!</h1>}
+          {!predictions[0].name ? <h1>Dog Classifier</h1> : <h1>I bet that {format_probability(predictions[0].prob)}% this is a {predictions[0].name}!</h1>}
         </header>
         <div>
-            {!this.state.uploadMode ? urlForm : uploadForm}
+            {!uploadMode ? urlForm : uploadForm}
             <p>
-              {!this.state.image ? '' : <img height="500px" src={this.state.image} alt="hopefullyadog" />}
+              {!image ? null : <img height="500px" src={image} alt="hopefullyadog" />}
             </p>
             <p>OR</p>
-            <button onClick={this.toggleMode}>{!this.state.uploadMode ? 'Upload Image' : 'Enter URL'}</button>
+            <button onClick={this.toggleMode}>{!uploadMode ? 'Upload Image' : 'Enter URL'}</button>
           </div>
       </div>
     );
@@ -141,6 +147,10 @@ class App extends React.Component {
 function isImage(string) {
   const re = new RegExp('^http.*jpg$');
   return re.test(string);
+}
+
+function format_probability(p) {
+  return Math.round(p * 100)
 }
 
 export default App;

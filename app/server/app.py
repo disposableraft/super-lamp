@@ -86,9 +86,10 @@ def class_names():
     'yorkshire_terrier' ]
 
 def top_three_predictions(outputs):
-  classes = [
-    {"name": c, "prob": outputs[idx].item()} for idx, c in enumerate(class_names())
-  ]
+  # Zip the classes and predictions together into a single array.
+  # `item()` translates the Tensor object (0.009) into an integer.
+  classes = [{"name": z[0], "prob": z[-1].item()} for z in zip(class_names(), outputs)]
+
   sorted_classes = sorted(classes, key=lambda k: k['prob'], reverse=True)
   return sorted_classes[0], sorted_classes[1], sorted_classes[2]
 

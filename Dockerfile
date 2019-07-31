@@ -5,6 +5,10 @@ RUN apt-get update \
     && pip install --upgrade pip \
     && rm -rf /var/lib/apt/lists/* 
 
+RUN pip install torch
+
+RUN pip install fastai
+
 COPY ./app/server/requirements.txt /requirements.txt
 
 RUN pip install -r /requirements.txt

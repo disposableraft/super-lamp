@@ -1,8 +1,8 @@
 aiofiles
 aiohttp
-fastai
+# fastai
 jinja2
 python-multipart
 starlette
-torch
+# torch
 uvicorn

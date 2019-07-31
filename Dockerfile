@@ -1,19 +1,24 @@
 FROM python:3.7-slim-stretch
 
+COPY ./app /app
+
 RUN apt-get update \
-    && apt-get install -y python3-dev gcc \
+    && apt-get install -y python3-dev gcc nodejs curl \
     && pip install --upgrade pip \
     && rm -rf /var/lib/apt/lists/* 
 
-RUN pip install torch
+RUN pip install -r /app/server/requirements.txt
 
-RUN pip install fastai
+# Install Node, Yarn and build the client
+WORKDIR /app/client
 
-COPY ./app/server/requirements.txt /requirements.txt
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-RUN pip install -r /requirements.txt
-
-COPY ./app /app
+RUN apt-get update \
+    && apt-get install yarn \
+    && yarn install \
+    && yarn build
 
 EXPOSE 80
 

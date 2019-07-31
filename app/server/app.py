@@ -89,9 +89,8 @@ def top_three_predictions(outputs):
   # Zip the classes and predictions together into a single array.
   # `item()` translates the Tensor object (0.009) into an integer.
   classes = [{"name": z[0], "prob": z[-1].item()} for z in zip(class_names(), outputs)]
-
-  sorted_classes = sorted(classes, key=lambda k: k['prob'], reverse=True)
-  return sorted_classes[0], sorted_classes[1], sorted_classes[2]
+  # Take the last three classes, which have the highest probabilities.
+  return classes[-3:]
 
 if __name__ == "__main__":
   uvicorn.run(app, host='0.0.0.0', port=5000)

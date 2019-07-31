@@ -22,7 +22,7 @@ class App extends React.Component {
 
   handleURL(event) {
     event.preventDefault();
-    axios.get('http://localhost:5000/from-url', {
+    axios.get('http://localhost:5000/url', {
       params: {
         url: this.state.image
       }

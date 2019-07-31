@@ -35,7 +35,7 @@ async def homepage(request):
     # TODO not really a need for templating here ...
     return Jinja2Templates(directory='../client/build').TemplateResponse('index.html', context)
 
-@app.route("/from-url", methods=["GET"])
+@app.route("/url", methods=["GET"])
 async def from_url(request):
   bytes = await get_bytes(request.query_params["url"])
   return predict_image_from_bytes(bytes)

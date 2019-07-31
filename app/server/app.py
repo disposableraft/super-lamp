@@ -1,16 +1,15 @@
-from starlette.applications import Starlette
-from starlette.staticfiles import StaticFiles
-from starlette.responses import HTMLResponse, JSONResponse
-from starlette.templating import Jinja2Templates
-import json
-import uvicorn
+import aiohttp
 from fastai.vision import (
     open_image,
     load_learner
   )
-import aiohttp
 from io import BytesIO
+import json
+from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
+from starlette.responses import HTMLResponse, JSONResponse
+import uvicorn
 
 app = Starlette(debug=True)
 
@@ -31,9 +30,8 @@ async def get_bytes(url):
 # The react default homepage
 @app.route('/')
 async def homepage(request):
-    context = {"request": request}
-    # TODO not really a need for templating here ...
-    return Jinja2Templates(directory='../client/build').TemplateResponse('index.html', context)
+    react = open('../client/build/index.html', 'r')
+    return HTMLResponse(react.read())
 
 @app.route("/url", methods=["GET"])
 async def from_url(request):

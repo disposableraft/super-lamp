@@ -47,15 +47,10 @@ async def upload(request):
 def predict_image_from_bytes(bytes):
   img = open_image(BytesIO(bytes))
   learner = load_learner("./fastai")
-  p_class, _, p_outputs = learner.predict(img)
-  p_0, p_1, p_2 = top_three_predictions(p_outputs)
+  outputs = learner.predict(img)[-1]
+  p_0, p_1, p_2 = top_three_predictions(outputs)
   return JSONResponse({
-    "prediction": str(p_class),
-    "topThree": {
-      1: p_0,
-      2: p_1,
-      3: p_2
-    }
+    "predictions": [p_0, p_1, p_2]
   })
 
 def class_names():
@@ -90,7 +85,7 @@ def top_three_predictions(outputs):
   # `item()` translates the Tensor object (0.009) into an integer.
   classes = [{"name": z[0], "prob": z[-1].item()} for z in zip(class_names(), outputs)]
   # Take the last three classes, which have the highest probabilities.
-  return classes[-3:]
+  return sorted(classes, key=lambda k: k['prob'], reverse=True)[:3]
 
 if __name__ == "__main__":
   uvicorn.run(app, host='0.0.0.0', port=5000)
